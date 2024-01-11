@@ -1,5 +1,5 @@
 import { GAME_INIT, HERO_MOVE } from "../constants/game-constants";
-import { generateField, isWall } from "../helpers";
+import { findEnemies, findNextCeil, generateField, isEnemy, isWall } from "../helpers";
 import { TGameField } from "../types";
 
 type TGameState = {
@@ -43,6 +43,7 @@ export function gameReducer(state = defaultState, action: TGameActions) {
       let heroY = state.heroY;
       let newHeroX = state.heroX;
       let newHeroY = state.heroY;
+
       switch (action.direction) {
         case "up": {
           newHeroY--;
@@ -68,7 +69,7 @@ export function gameReducer(state = defaultState, action: TGameActions) {
           break;
       }
 
-      if (isWall(state.field, newHeroX, newHeroY)) {
+      if (isWall(state.field, newHeroX, newHeroY) || isEnemy(state.field, newHeroX, newHeroY)) {
         return state;
       }
 
@@ -79,6 +80,14 @@ export function gameReducer(state = defaultState, action: TGameActions) {
       const hero = newField[heroY][heroX];
       newField[newHeroY][newHeroX] = hero;
       newField[heroY][heroX] = { type: "floor" }
+
+      const enemiesCoordinate: { x: number, y: number }[] = findEnemies(newField);
+      enemiesCoordinate.forEach((enemyCoordinate) => {
+        const newEnemyCoordinate: { xEnemy: number, yEnemy: number } = findNextCeil(newField, enemyCoordinate.x, enemyCoordinate.y, newHeroX, newHeroY);
+        const enemy = newField[enemyCoordinate.y][enemyCoordinate.x];
+        newField[enemyCoordinate.y][enemyCoordinate.x] = { type: "floor" };
+        newField[newEnemyCoordinate.yEnemy][newEnemyCoordinate.xEnemy] = enemy;
+      })
 
       return {
         ...state,

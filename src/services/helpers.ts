@@ -113,8 +113,85 @@ export function generateField() {
   return { field: location, heroPosition };
 }
 
+export function findNextCeil(field: TGameField, xEnemy: number, yEnemy: number, xHero: number, yHero: number) {
+  let enemyCeils: { x: number, y: number }[] = [];
+  let xEnemyNew = xEnemy;
+  let yEnemyNew = yEnemy;
+  let sumCoordinates = Math.abs(xHero - xEnemy) + Math.abs(yHero - yEnemy);
+
+  if (isFloor(field, xEnemy - 1, yEnemy)) enemyCeils.push({ x: xEnemy - 1, y: yEnemy });
+  if (isFloor(field, xEnemy + 1, yEnemy)) enemyCeils.push({ x: xEnemy + 1, y: yEnemy });
+  if (isFloor(field, xEnemy, yEnemy - 1)) enemyCeils.push({ x: xEnemy, y: yEnemy - 1 });
+  if (isFloor(field, xEnemy, yEnemy + 1)) enemyCeils.push({ x: xEnemy, y: yEnemy + 1 });
+
+  enemyCeils.forEach((enemy) => {
+    let currSumCoordinates = Math.abs(xHero - enemy.x) + Math.abs(yHero - enemy.y)
+    if (currSumCoordinates <= sumCoordinates) {
+      xEnemyNew = enemy.x;
+      yEnemyNew = enemy.y;
+      sumCoordinates = currSumCoordinates;
+    }
+  })
+
+  return { xEnemy: xEnemyNew, yEnemy: yEnemyNew }
+}
+
+export function findEnemies(field: TGameField) {
+  let enemyPositions: { x: number, y: number }[] = [];
+
+  field.forEach((row, rowIndex) => {
+    row.forEach((ceil, columnIndex) => {
+      if (ceil.type === "enemy") {
+        enemyPositions.push({ x: columnIndex, y: rowIndex });
+      }
+
+    })
+  })
+  return enemyPositions;
+}
+
 export function isWall(field: TGameField, x: number, y: number) {
   if (field[y][x].type === "wall") {
+    return true;
+  }
+
+  return false;
+}
+
+export function isPotion(field: TGameField, x: number, y: number) {
+  if (field[y][x].type === "potion") {
+    return true;
+  }
+
+  return false;
+}
+
+export function isSword(field: TGameField, x: number, y: number) {
+  if (field[y][x].type === "sword") {
+    return true;
+  }
+
+  return false;
+}
+
+export function isHero(field: TGameField, x: number, y: number) {
+  if (field[y][x].type === "hero") {
+    return true;
+  }
+
+  return false;
+}
+
+export function isEnemy(field: TGameField, x: number, y: number) {
+  if (field[y][x].type === "enemy") {
+    return true;
+  }
+
+  return false;
+}
+
+export function isFloor(field: TGameField, x: number, y: number) {
+  if (field[y][x].type === "floor") {
     return true;
   }
 
