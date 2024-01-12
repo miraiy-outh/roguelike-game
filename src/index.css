@@ -14,30 +14,30 @@
 }
 
 .wall {
-  background-image: url('images/wall.png');
+  background-image: url('../public/images/wall.png');
 
 }
 
 .floor {
-  background-image: url('images/floor.png');
+  background-image: url('../public/images/floor.png');
 }
 
 .enemy {
   position: relative;
-  background-image: url('images/enemy.png');
+  background-image: url('../public/images/enemy.png');
 }
 
 .hero {
   position: relative;
-  background-image: url('images/hero.png');
+  background-image: url('../public/images/hero.png');
 }
 
 .sword {
-  background-image: url('images/sword.png');
+  background-image: url('../public/images/sword.png');
 }
 
 .potion {
-  background-image: url('images/potion.png');
+  background-image: url('../public/images/potion.png');
 }
 
 .hp {

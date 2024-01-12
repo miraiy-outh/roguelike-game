@@ -1,30 +1,29 @@
-# React + TypeScript + Vite
+# О проекте
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Данный проект - простая рогалик-игра.
+В игре есть:
+- враги, 
+- зелья здоровья
+- мечи (дают + к атаке героя).
 
-Currently, two official plugins are available:
+Управление: передвижение клавишами WASD, атака клавишей SPACE.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Использованные технологии
+- React
+- TypeScript
+- Redux
+- Material UI
+## Хостинг
+Попробовать можно здесь [https://roguelike-game-miraiy-outh.web.app](https://roguelike-game-miraiy-outh.web.app)
 
-## Expanding the ESLint configuration
+## Установка и запуск
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+Установить зависимости:
+```bash
+npm install
 ```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Запуск проекта:
+```bash
+npm start
+```
+Открыть локально [http://localhost:4173/](http://localhost:4173/)
