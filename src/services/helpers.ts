@@ -1,8 +1,15 @@
-import { TGameCeil, TGameField } from "./types";
+import { TGameCeil, TGameCeilHero, TGameField } from "./types";
 
 const MIN_ROOM_COUNT = 8;
 const MIN_ROOM_SIZE = 3;
 const MAX_ROOM_SIZE = 8;
+const ENEMY_COUNT = 10;
+const POTION_COUNT = 10;
+const SWORD_COUNT = 2;
+const HERO_HP = 100;
+const HERO_ATTACK = 50;
+const ENEMY_HP = 100;
+const ENEMY_ATTACK = 10;
 
 export function generateField() {
   let heroPosition = { x: 0, y: 0 };
@@ -68,17 +75,17 @@ export function generateField() {
   }
 
   let enemyCount = 0;
-  while (enemyCount < 10) {
+  while (enemyCount < ENEMY_COUNT) {
     const randomX = Math.floor(Math.random() * width);
     const randomY = Math.floor(Math.random() * height);
     if (location[randomY][randomX].type === "floor") {
-      location[randomY][randomX] = { type: "enemy", hp: 100 };
+      location[randomY][randomX] = { type: "enemy", hp: ENEMY_HP, attack: ENEMY_ATTACK };
       enemyCount++;
     }
   }
 
   let swordCount = 0;
-  while (swordCount < 2) {
+  while (swordCount < SWORD_COUNT) {
     const randomX = Math.floor(Math.random() * width);
     const randomY = Math.floor(Math.random() * height);
     if (location[randomY][randomX].type === "floor") {
@@ -88,7 +95,7 @@ export function generateField() {
   }
 
   let potionCount = 0;
-  while (potionCount < 10) {
+  while (potionCount < POTION_COUNT) {
     const randomX = Math.floor(Math.random() * width);
     const randomY = Math.floor(Math.random() * height);
     if (location[randomY][randomX].type === "floor") {
@@ -103,7 +110,7 @@ export function generateField() {
     const randomY = Math.floor(Math.random() * height);
     if (location[randomY][randomX].type === "floor") {
       console.log(randomX, randomY);
-      location[randomY][randomX] = { type: "hero", hp: 100 };
+      location[randomY][randomX] = { type: "hero", hp: HERO_HP, attack: HERO_ATTACK };
       heroPosition.x = randomX;
       heroPosition.y = randomY;
       heroPlaced = true;
@@ -119,10 +126,10 @@ export function findNextCeil(field: TGameField, xEnemy: number, yEnemy: number, 
   let yEnemyNew = yEnemy;
   let sumCoordinates = Math.abs(xHero - xEnemy) + Math.abs(yHero - yEnemy);
 
-  if (isFloor(field, xEnemy - 1, yEnemy)) enemyCeils.push({ x: xEnemy - 1, y: yEnemy });
-  if (isFloor(field, xEnemy + 1, yEnemy)) enemyCeils.push({ x: xEnemy + 1, y: yEnemy });
-  if (isFloor(field, xEnemy, yEnemy - 1)) enemyCeils.push({ x: xEnemy, y: yEnemy - 1 });
-  if (isFloor(field, xEnemy, yEnemy + 1)) enemyCeils.push({ x: xEnemy, y: yEnemy + 1 });
+  if (!isWall(field, xEnemy - 1, yEnemy) && !isHero(field, xEnemy - 1, yEnemy) && !isEnemy(field, xEnemy - 1, yEnemy)) enemyCeils.push({ x: xEnemy - 1, y: yEnemy });
+  if (!isWall(field, xEnemy + 1, yEnemy) && !isHero(field, xEnemy + 1, yEnemy) && !isEnemy(field, xEnemy + 1, yEnemy)) enemyCeils.push({ x: xEnemy + 1, y: yEnemy });
+  if (!isWall(field, xEnemy, yEnemy - 1) && !isHero(field, xEnemy, yEnemy - 1) && !isEnemy(field, xEnemy, yEnemy - 1)) enemyCeils.push({ x: xEnemy, y: yEnemy - 1 });
+  if (!isWall(field, xEnemy, yEnemy + 1) && !isHero(field, xEnemy, yEnemy + 1) && !isEnemy(field, xEnemy, yEnemy + 1)) enemyCeils.push({ x: xEnemy, y: yEnemy + 1 });
 
   enemyCeils.forEach((enemy) => {
     let currSumCoordinates = Math.abs(xHero - enemy.x) + Math.abs(yHero - enemy.y)
@@ -150,6 +157,27 @@ export function findEnemies(field: TGameField) {
   return enemyPositions;
 }
 
+export function findEnemiesAround(field: TGameField, x: number, y: number) {
+  let enemyCeils: { x: number, y: number }[] = [];
+
+  if (isEnemy(field, x - 1, y)) enemyCeils.push({ x: x - 1, y });
+  if (isEnemy(field, x + 1, y)) enemyCeils.push({ x: x + 1, y });
+  if (isEnemy(field, x, y - 1)) enemyCeils.push({ x, y: y - 1 });
+  if (isEnemy(field, x, y + 1)) enemyCeils.push({ x, y: y + 1 });
+
+  return enemyCeils;
+}
+
+export function findHeroAround(field: TGameField, x: number, y: number) {
+
+  if (isHero(field, x - 1, y)) return true;
+  if (isHero(field, x + 1, y)) return true;
+  if (isHero(field, x, y - 1)) return true;
+  if (isHero(field, x, y + 1)) return true;
+
+  return false;
+}
+
 export function isWall(field: TGameField, x: number, y: number) {
   if (field[y][x].type === "wall") {
     return true;
@@ -174,16 +202,18 @@ export function isSword(field: TGameField, x: number, y: number) {
   return false;
 }
 
-export function isHero(field: TGameField, x: number, y: number) {
-  if (field[y][x].type === "hero") {
+
+
+export function isEnemy(field: TGameField, x: number, y: number) {
+  if (field[y][x].type === "enemy") {
     return true;
   }
 
   return false;
 }
 
-export function isEnemy(field: TGameField, x: number, y: number) {
-  if (field[y][x].type === "enemy") {
+export function isHero(field: TGameField, x: number, y: number) {
+  if (field[y][x].type === "hero") {
     return true;
   }
 
@@ -195,5 +225,23 @@ export function isFloor(field: TGameField, x: number, y: number) {
     return true;
   }
 
+  return false;
+}
+
+export function getHero(field: TGameField, x: number, y: number) {
+  return field[y][x] as TGameCeilHero;
+}
+
+export function checkFullHP(hp: number) {
+  if (hp > 100) {
+    return 100;
+  }
+  return hp;
+}
+
+export function isZeroHP(hp: number) {
+  if (hp <= 0) {
+    return true;
+  }
   return false;
 }

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "./redux-hooks";
-import { HERO_MOVE } from "../services/constants/game-constants";
+import { HERO_ATTACK, HERO_MOVE } from "../services/constants/game-constants";
 
 export function useKeyboardManager() {
     const dispatch = useDispatch();
@@ -17,6 +17,9 @@ export function useKeyboardManager() {
             }
             if (event.key === 'd') {
                 dispatch({ type: HERO_MOVE, direction: "right" })
+            }
+            if (event.code === 'Space') {
+                dispatch({ type: HERO_ATTACK })
             }
         }
         window.addEventListener('keydown', keyPressed);

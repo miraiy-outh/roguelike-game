@@ -54,3 +54,26 @@
 .hero>.hp {
   background: greenyellow;
 }
+
+.container {
+  position: relative;
+}
+
+.end-window {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1920px;
+  height: 1150px;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.end-text {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 100px;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: white;
+}

@@ -14,14 +14,16 @@ type TGameCeilSword = {
     type: "sword"
 }
 
-type TGameCeilHero = {
+export type TGameCeilHero = {
     type: "hero",
-    hp: number
+    hp: number,
+    attack: number
 }
 
-type TGameCeilEnemy = {
+export type TGameCeilEnemy = {
     type: "enemy",
-    hp: number
+    hp: number,
+    attack: number
 }
 
 export type TGameCeil = TGameCeilEnemy | TGameCeilFloor | TGameCeilHero | TGameCeilPotion | TGameCeilSword | TGameCeilWall

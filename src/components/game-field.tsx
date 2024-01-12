@@ -5,11 +5,10 @@ import { GameCeil } from "./game-ceil";
 
 export function GameField() {
   const field = useSelector(fieldSelector);
-  console.log(field)
 
-  const ceils = field.map((row) => {
-    return row.map((ceil) => {
-      return <GameCeil entity={ceil}></GameCeil>;
+  const ceils = field.map((row, i) => {
+    return row.map((ceil, j) => {
+      return <GameCeil key={`${i}-${j}`} entity={ceil}></GameCeil>;
     })
   })
 
