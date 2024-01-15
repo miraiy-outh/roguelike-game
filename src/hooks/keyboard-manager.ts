@@ -6,16 +6,16 @@ export function useKeyboardManager() {
     const dispatch = useDispatch();
     useEffect(() => {
         function keyPressed(event: KeyboardEvent) {
-            if (event.key === 'w') {
+            if (event.key === 'w' || event.key === 'ц') {
                 dispatch({ type: HERO_MOVE, direction: "up" });
             }
-            if (event.key === 'a') {
+            if (event.key === 'a' || event.key === 'ф') {
                 dispatch({ type: HERO_MOVE, direction: "left" })
             }
-            if (event.key === 's') {
+            if (event.key === 's' || event.key === 'ы') {
                 dispatch({ type: HERO_MOVE, direction: "down" })
             }
-            if (event.key === 'd') {
+            if (event.key === 'd' || event.key === 'в') {
                 dispatch({ type: HERO_MOVE, direction: "right" })
             }
             if (event.code === 'Space') {
